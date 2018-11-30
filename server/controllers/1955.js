@@ -3,16 +3,17 @@ console.log('controllers file')
 
 module.exports = {
     index : function(req, res){
-        var all;
-        Person.find({}, function(err, people){
-            if (err){
-                res.send("Something went wrong")
-            }
-            else {
-                all = people
-                res.json({message : 'Success', data : all})
-            }
-        })
+        res.sendFile(__dirname + 'index.html')
+        // var all;
+        // Person.find({}, function(err, people){
+        //     if (err){
+        //         res.send("Something went wrong")
+        //     }
+        //     else {
+        //         all = people
+        //         res.json({message : 'Success', data : all})
+        //     }
+        // })
     },
 
     new : function(req, res){
