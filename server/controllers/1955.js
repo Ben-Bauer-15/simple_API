@@ -3,6 +3,7 @@ console.log('controllers file')
 
 module.exports = {
     index : function(req, res){
+        console.log('Index')
         res.sendFile(__dirname + 'index.html')
         // var all;
         // Person.find({}, function(err, people){
