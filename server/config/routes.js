@@ -6,6 +6,10 @@ module.exports = function(app) {
         controller.index(req, res)
     })
 
+    app.get('/allPeople', function(req, res){
+        controller.getAllPeople(req, res)
+    })
+
     app.get('/new/:name', function(req, res){
         controller.new(req, res)
     })
