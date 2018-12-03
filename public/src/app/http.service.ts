@@ -11,36 +11,20 @@ export class HttpService {
    }
 
    getAllPeople(){
-     let tempObservable = this._http.get('/allPeople');
+     return this._http.get('/allPeople');
 
-     tempObservable.subscribe(function(data){
-       console.log("Got all people", data)
-     });
    }
 
    addPerson(name){
-     let observable = this._http.get('/new/' + name);
-
-     observable.subscribe(function(data){
-       console.log("Made a new person", data)
-     })
+     return this._http.get('/new/' + name);
    }
 
    removePerson(name){
-     let observable = this._http.get('/remove/' + name);
-
-     observable.subscribe(function(data){
-       console.log("Removed a person", data)
-     })
+     return this._http.get('/remove/' + name);
     }
     
     getOnePerson(name){
-      let observable = this._http.get('/' + name);
-  
-      observable.subscribe(function(data){
-        console.log("Got one person", data)
-      })
-     
+      return this._http.get('/' + name);
    }
 
 
