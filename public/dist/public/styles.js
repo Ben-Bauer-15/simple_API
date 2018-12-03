@@ -557,7 +557,7 @@ if(false) {}
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/bbauer/Desktop/MEAN/angular/pokeAPI/public/src/styles.css */"./src/styles.css");
+module.exports = __webpack_require__(/*! /Users/bbauer/Desktop/MEAN/mongo/apis/1955/public/src/styles.css */"./src/styles.css");
 
 
 /***/ })

@@ -74,7 +74,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Welcome to {{ title }}!\n  </h1>\n  <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n</div>\n<h3>{{num}}</h3>\n<p *ngIf = 'loggedIn'>You are logged in!</p>\n<h2>Here are some links to help you start: </h2>\n<ul>\n  <li>\n    <h2><a target=\"_blank\" rel=\"noopener\" href=\"https://angular.io/tutorial\">Tour of Heroes</a></h2>\n  </li>\n  <li>\n    <h2><a target=\"_blank\" rel=\"noopener\" href=\"https://angular.io/cli\">CLI Documentation</a></h2>\n  </li>\n  <li>\n    <h2><a target=\"_blank\" rel=\"noopener\" href=\"https://blog.angular.io/\">Angular blog</a></h2>\n  </li>\n</ul>\n\n<router-outlet></router-outlet>\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    1955 API\n  </h1>\n  <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n</div>\n<div>\n  <button (click) = 'getAllButtonClicked()'>Get All People From the DB</button>\n  <h3 *ngFor = 'let person of allPeople'>{{person}} <button (click) = 'showOnePerson(person)'>Show</button></h3> \n</div>\n<br>\n<br>\n<br>\n<div *ngIf = 'person.name != undefined'>\n  <h4>Name</h4>\n  <h6>{{person.name}}</h6>\n  <h4>Created At</h4>\n  <h6>{{person.createdAt}}</h6>\n</div>\n\n<router-outlet></router-outlet>\n"
 
 /***/ }),
 
@@ -97,16 +97,34 @@ __webpack_require__.r(__webpack_exports__);
 var AppComponent = /** @class */ (function () {
     function AppComponent(_httpService) {
         this._httpService = _httpService;
-        this.pokemon = [];
-        this.title = 'Pokemon Fo Dayzzzz';
+        this.title = 'public';
     }
     AppComponent.prototype.ngOnInit = function () {
-        this.loggedIn = true;
-        this.num = 7;
-        var bulbasaur = this._httpService.getPokemon();
-        bulbasaur.subscribe(function (data) {
-            this.pokemon = data;
-            console.log(this.pokemon);
+        this.allPeople = [];
+        this.person = { name: undefined, createdAt: undefined };
+    };
+    AppComponent.prototype.getAllPeopleFromDb = function (allPeople) {
+        var all = this._httpService.getAllPeople();
+        all.subscribe(function (data) {
+            for (var i = 0; i < data.data.length; i++) {
+                allPeople.push(data.data[i].name);
+            }
+        });
+    };
+    AppComponent.prototype.getAllButtonClicked = function () {
+        if (this.allPeople.length < 1) {
+            this.getAllPeopleFromDb(this.allPeople);
+        }
+    };
+    AppComponent.prototype.showOnePerson = function (person) {
+        var self = this;
+        var subject = this._httpService.getOnePerson(person);
+        subject.subscribe(function (data) {
+            if (data != undefined) {
+                self.person.name = data.data.name;
+                self.person.createdAt = data.data.createdAt;
+                console.log(self.person);
+            }
         });
     };
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -138,8 +156,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
-/* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./http.service */ "./src/app/http.service.ts");
+/* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./http.service */ "./src/app/http.service.ts");
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 
 
@@ -154,15 +172,15 @@ var AppModule = /** @class */ (function () {
     AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
             declarations: [
-                _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]
+                _app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
                 _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_6__["HttpClientModule"]
             ],
-            providers: [_http_service__WEBPACK_IMPORTED_MODULE_5__["HttpService"]],
-            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
+            providers: [_http_service__WEBPACK_IMPORTED_MODULE_4__["HttpService"]],
+            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
         })
     ], AppModule);
     return AppModule;
@@ -191,35 +209,19 @@ __webpack_require__.r(__webpack_exports__);
 var HttpService = /** @class */ (function () {
     function HttpService(_http) {
         this._http = _http;
-        this.abilities = [];
-        this.name = '';
-        this.self = this;
-        // this.getPokemon(this.self)
+        this.addPerson("Robert DeNiro");
     }
-    HttpService.prototype.findSimilarAbilities = function (self) {
-        for (var key in self.abilities) {
-            var sharedAbility = self._http.get(self.abilities[key].url);
-            sharedAbility.subscribe(function (data) {
-                var count = 0;
-                for (var i = 0; i < data.pokemon.length; i++) {
-                    if (data.pokemon[i].pokemon.name != self.name) {
-                        count++;
-                    }
-                }
-                console.log(count + " pokemon share the " + data.name + " ability with " + self.name);
-            });
-        }
+    HttpService.prototype.getAllPeople = function () {
+        return this._http.get('/allPeople');
     };
-    HttpService.prototype.getPokemon = function () {
-        var bulbasaur = this._http.get('https://pokeapi.co/api/v2/pokemon/1/');
-        return bulbasaur;
-        //  bulbasaur.subscribe(function(data){
-        //   self.name = data.name
-        //    for (var i = 0 ; i < data.abilities.length; i++){
-        //      self.abilities.push({name : data.abilities[i].ability.name, url : data.abilities[i].ability.url})
-        //    }
-        //    self.findSimilarAbilities(self)
-        //  })
+    HttpService.prototype.addPerson = function (name) {
+        return this._http.get('/new/' + name);
+    };
+    HttpService.prototype.removePerson = function (name) {
+        return this._http.get('/remove/' + name);
+    };
+    HttpService.prototype.getOnePerson = function (name) {
+        return this._http.get('/' + name);
     };
     HttpService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -295,7 +297,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/bbauer/Desktop/MEAN/angular/pokeAPI/public/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/bbauer/Desktop/MEAN/mongo/apis/1955/public/src/main.ts */"./src/main.ts");
 
 
 /***/ })
