@@ -8,6 +8,7 @@ import { HttpService } from './http.service';
 })
 export class AppComponent {
   allPeople;
+  person;
 
   title = 'public';
   constructor (private _httpService : HttpService){
@@ -15,10 +16,11 @@ export class AppComponent {
 
   ngOnInit(){
     this.allPeople = []
-    this.getAllPeople(this.allPeople)
+    this.person = {name : undefined, createdAt : undefined}
   }
   
-  getAllPeople(allPeople){
+  getAllPeopleFromDb(allPeople){
+    
     let all = this._httpService.getAllPeople()
     all.subscribe(function(data){
       for (var i = 0; i < data.data.length; i++){
@@ -27,6 +29,23 @@ export class AppComponent {
     })
   }
 
+  getAllButtonClicked(){
+    if (this.allPeople.length < 1){
+      this.getAllPeopleFromDb(this.allPeople)
+    }
+  }
+
+  showOnePerson(person) {
+    var self = this
+    let subject = this._httpService.getOnePerson(person)
+    subject.subscribe(function(data){
+      if (data != undefined) {
+        self.person.name = data.data.name
+        self.person.createdAt = data.data.createdAt
+        console.log(self.person)
+      }
+    })
+  }
 
 }
 
